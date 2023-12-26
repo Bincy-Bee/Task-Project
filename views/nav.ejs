@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="maindiv">
+                <div class="first">
+                    <a href="/task/mytaskpage">My Task</a>
+                    <a href="/task/taskpage">Task Form</a>
+                    <a href="/task/tasklist" id="tasklist">Task List</a>
+                </div>
+                <div class="second">
+                    <a href="/user/signup" id="register">Register</a>
+                    <a href="/user/login" id="login">Login</a>
+                    <a href="/user/logout" id="logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+</body>
+<script>
+    document.getElementById("logout").style.display="none";
+    document.getElementById("tasklist").style.display="none";
+    let cookie = document.cookie;
+    console.log(cookie)
+    if(cookie){
+        document.getElementById("register").style.display="none";
+        document.getElementById("login").style.display="none";
+        document.getElementById("logout").style.display="block";
+    }
+    let cookieRoles= document.cookie.split(";")[1];
+    let cookieRole= document.cookie.split(";")[1].split("=")[1];
+    console.log(cookieRole)
+    if(cookieRole == "admin"){
+        document.getElementById("tasklist").style.display="block"
+        
+    }
+    const cookieDel=(data)=>{
+        document.cookie= data + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    }
+    // document.getElementById("logout").addEventListener("click",()=> cookieDel(cookie));
+    // document.getElementById("logout").addEventListener("click",()=> cookieDel(cookieRoles));
+</script>
+</html>

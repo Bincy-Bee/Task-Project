@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskList</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include("nav") %>
+    <section class="tasklist">
+        <div class="container">
+            <div id="display"></div>
+        </div>
+    </section>
+</body>
+<script>
+     const taskdel=(id)=>{
+        fetch(`/task/mytaskdel/${id}`,{
+            method: 'DELETE',
+        })
+        .then(()=>window.location.reload());
+    }
+    // const taskupdate=(id)=>{
+    //     fetch(`/task/mytaskupdate/${id}`,{
+    //         method: 'PATCH',
+    //         headers: {'Content-Type': 'application/json'}
+    //     })
+    // }
+    const display =(data)=>{
+        document.getElementById("display").innerHTML="";
+        data.map((ele)=>{
+            taskname = document.createElement("h4");
+            taskname.innerHTML= ele.taskname;
+
+            desc = document.createElement("p");
+            desc.innerHTML= ele.decs;
+
+            priority = document.createElement("h5");
+            priority.innerHTML= ele.priority;
+
+            dueDate = document.createElement("h6");
+            dueDate.innerHTML= ele.dueDate;
+
+            btn1= document.createElement("button");
+            btn1.innerHTML="Update";
+            btn1.addEventListener("click",()=> 
+            window.location.href=`/task/mytaskupdate/${ele._id}`);
+
+            btn2= document.createElement("button");
+            btn2.innerHTML="Delete";
+            btn2.addEventListener("click",()=>taskdel(ele._id)   );
+
+            div= document.createElement("div");
+            div.append(taskname, desc, priority, dueDate,btn1,btn2);
+
+            document.getElementById("display").append(div);
+        })
+    }
+
+    const get = ()=>{
+
+        fetch(`/task/tasks`)
+        .then((res)=>res.json())
+        .then((data)=>{
+            console.log(data)
+            display(data)
+        })
+        .catch((err)=>console.log(err))
+    }
+    get();
+</script>
+</html>

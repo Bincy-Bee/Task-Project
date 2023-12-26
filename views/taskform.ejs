@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskForm</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <%- include("nav") %>
+    <section class="taskform">
+        <div class="container">
+            <form id="taskform">
+                <input type="text" id="taskname" name="taskname" placeholder="Enter Task Name" value="<%= edit ? data.taskname : '' %>"><br><br>
+                <input type="text" id="decs" name="decs" placeholder="Enter description" value="<%=  edit ? data.decs : '' %>"><br><br>
+                <select name="priority" id="priority">
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="high">high</option>
+                </select><br><br>
+                <input type="date" id="date" name="dueDate" placeholder="Enter Due Date" value="<%= edit ? data.duedate :'' %>"><br><br>
+                <input type="submit" id="sub" value="<%= edit ? 'update' : 'submit'  %>"><br><br>
+            </form>
+        </div>
+    </section>
+</body>
+<script>
+    let id=window.location.href.split("/")[4]
+    console.log(id);
+    document.getElementById("taskform").addEventListener("submit",(e)=>{
+        e.preventDefault()
+        let type=document.getElementById("sub").value
+        let obj={
+            taskname:document.getElementById("taskname").value,
+            decs:document.getElementById("decs").value,
+            priority:document.getElementById("priority").value,
+            date:document.getElementById("date").value
+        }
+        console.log(obj);
+        if(type=="edit"){
+            fetch(`/task/mytaskupdate/${id}`,{
+                method:"PATCH",
+                headers:{"content-type":"application/json"},
+                body:JSON.stringify(obj)
+            })
+        }else{
+            fetch("/task/taskpage",{
+                method:"POST",
+                headers:{"content-type":"application/json"},
+                body:JSON.stringify(obj)
+            })
+        }
+})
+</script>
+</html>
